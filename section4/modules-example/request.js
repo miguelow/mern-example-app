@@ -4,7 +4,7 @@ function encrypt(data){
 
 function send(url, data) {
     const encryptedData = encrypt(data)
-    console.log(`sendind ${encryptedData} to ${url}`)
+    console.log(`sending ${encryptedData} to ${url}`)
 }
 
 module.exports = {
