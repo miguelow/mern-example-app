@@ -28,6 +28,23 @@ app.use((req, res , next) => {
 
 })
 
+app.use(express.json())
+
+app.post('/friends', (req, res) => {
+    if(!req.body.name){
+        res.status(400).json({
+            error: 'Name is required'
+        })
+    }
+    const newFriend = {
+        id: friends.length,
+        name: req.body.name
+    }
+    friends.push(newFriend)
+    
+    res.json(newFriend)
+})
+
 app.get('/friends', (req, res) => {
     res.json(friends)
 })
