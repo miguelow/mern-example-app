@@ -1,19 +1,11 @@
 const express = require('express');
 
+const messagesController = require('./controllers/messages.controller')
+const friendsController = require('./controllers/friends.controller')
+
 const app = express();
 
 const PORT = 3000
-
-let friends = [
-    {
-        id: 0,
-        name: 'Roci'
-    },
-    {
-        id: 1,
-        name: 'Miguel'
-    },
-]
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`)
@@ -30,34 +22,9 @@ app.use((req, res , next) => {
 
 app.use(express.json())
 
-app.post('/friends', (req, res) => {
-    if(!req.body.name){
-        res.status(400).json({
-            error: 'Name is required'
-        })
-    }
-    const newFriend = {
-        id: friends.length,
-        name: req.body.name
-    }
-    friends.push(newFriend)
-    
-    res.json(newFriend)
-})
+app.post('/friends', friendsController.postFriend)
+app.get('/friends', friendsController.getFriends)
+app.get('/friends/:friendId', friendsController.getFriend)
 
-app.get('/friends', (req, res) => {
-    res.json(friends)
-})
-
-app.get('/friends/:friendId', (req, res) => {
-    //el id vuelve de la url como string que tenemos que pasar a un numero
-    const friendId = Number(req.params.friendId)
-    const friend = friends[friendId]
-    if (friend) {
-        res.json(friend)
-    }else{
-        res.status(404).json({
-            error: 'Friend not found'
-        })
-    }
-})
+app.get('/messages', messagesController.getMessages)
+app.post('/messages', messagesController.postMessages)
