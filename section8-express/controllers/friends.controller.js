@@ -1,44 +1,40 @@
-const model = require('../models/friends.model')
+const model = require('../models/friends.model');
 
-//mejor utilizar esta convencion de funciones en vez de arrow function
-//si ocurre algun queremos el nombre de la función
-function postFriend (req, res) {
-    if(!req.body.name){
-        return res.status(400).json({
-            error: 'Name is required'
-        })
-    }else if(model.filter(friend => friend.name === req.body.name).length > 0){
-        return res.status(400).json({
-            error: 'Friend already exists'
-        })
-    }
-    const newFriend = {
-        id: model.length,
-        name: req.body.name
-    }
-    model.push(newFriend)
-    res.json(newFriend)
+//Conviene declarar asi las fn para que al debugear tengamos el nombre de las funciones
+function postFriend(req, res) {
+  if (!req.body.name) {
+    return res.status(400).json({
+      error: 'Missing friend name'
+    });
+  }
+
+  const newFriend = {
+    name: req.body.name,
+    id: model.length,
+  };
+  model.push(newFriend);
+
+  res.json(newFriend);
 }
 
-function getFriends (req, res) {
-    res.json(model)
+function getFriends(req, res) {
+  res.json(model);
 }
 
-function getFriend (req, res) {
-    //el id vuelve de la url como string que tenemos que pasar a un numero
-    const friendId = Number(req.params.friendId)
-    const friend = model[friendId]
-    if (friend) {
-        res.json(friend)
-    }else{
-        res.status(404).json({
-            error: 'Friend not found'
-        })
-    }
+function getFriend(req, res) {
+  const friendId = Number(req.params.friendId);
+  const friend = model[friendId];
+  if (friend) {
+    res.status(200).json(friend);
+  } else {
+    res.status(404).json({
+      error: 'Friend does not exist'
+    });
+  }
 }
 
 module.exports = {
-    getFriends,
-    postFriend,
-    getFriend
-}
+  postFriend,
+  getFriends,
+  getFriend,
+};

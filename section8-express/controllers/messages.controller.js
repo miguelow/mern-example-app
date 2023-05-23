@@ -1,14 +1,16 @@
-//mejor utilizar esta convencion de funciones en vez de arrow function
-//si ocurre algun error nos da el nombre
-function getMessages (req, res) {
-    res.send('<h1>Hello from messages!</h1>')
+const path = require('path');
+
+function getMessages(req, res) {
+  
+
+  // res.sendFile(path.join(__dirname, '..', 'public', 'images', 'skimountain.jpg'));
 }
 
-function postMessages (req, res) {
-    console.log('Updating messages...')
+function postMessage(req, res) {
+  console.log('Updating messages...');
 }
 
 module.exports = {
-    getMessages,
-    postMessages
-}
+  getMessages,
+  postMessage,
+};
