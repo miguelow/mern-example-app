@@ -25,7 +25,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.render('index', {
-    title: 'Skying tryp 2018',
+    title: 'Skying trip 2018',
     caption: 'Lets go skiing!',
   });
 });
