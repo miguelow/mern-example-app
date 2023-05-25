@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path'); 
 const {parse} = require('csv-parse');
-const wahetevr = require('../')
 
 const habitablePlanets = [];
 
@@ -35,12 +34,9 @@ function loadPLanetsData(){
             .on('end', () => {
                 resolve()
             });
-
     })
 }
-
-
-  module.exports = {
+module.exports = {
     loadPLanetsData,
     planets : habitablePlanets,
-  }
+}
