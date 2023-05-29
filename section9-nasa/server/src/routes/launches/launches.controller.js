@@ -1,10 +1,11 @@
-const {launches} = require('../../models/launches.model')
+const {getAllLaunches} = require('../../models/launches.model')
 
-function getAllLaunches(req, res){
+//Al usar la nomenclatura http... sabemos que esa funcion devuelve una response
+function httpGetAllLaunches(req, res){
 //Launches en un map -> convertir el map en objeto de js
-        return res.status(200).json(Array.from(launches.values()))
+        return res.status(200).json(getAllLaunches())
 }
 
 module.exports = {
-    getAllLaunches,
+    httpGetAllLaunches,
 }

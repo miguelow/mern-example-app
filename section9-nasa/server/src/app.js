@@ -10,12 +10,16 @@ const app = express();
 
 app.use(cors())
 app.use(morgan('combined'))
+
 app.use(express.json());
+//Servimos nuestro frontend optimizado desde la carpeta public
 app.use(express.static(path.join(__dirname, '..', 'public')))
 
 app.use(planetsRouter );
 app.use(launchesRouter );
 app.get('/*', (req, res) => {
+  //el asterisco indica que si la ruta no coincide con las anteriores
+  // dejando al frontend que lleve a cabo el enrutamiento
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
   });
 
