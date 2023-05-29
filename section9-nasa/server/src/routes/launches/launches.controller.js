@@ -8,7 +8,7 @@ function httpGetAllLaunches(req, res){
 function httpAddNewLaunch(req, res){
     const launch = req.body
 
-    if(!launch.launchDate || !launch.rocket || !launch.mission || !launch.destination){
+    if(!launch.launchDate || !launch.rocket || !launch.mission || !launch.target){
         return res.status(400).json({error: 'All fields are required'})
     }
 
