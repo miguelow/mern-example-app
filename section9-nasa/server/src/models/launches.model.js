@@ -1,5 +1,7 @@
 const launches = new Map();
 
+let latestFlightNumber = 100;
+
 const launch = {
     mission: 'Kepler exploration',
     rocket: 'Rocket',
@@ -18,6 +20,21 @@ function getAllLaunches() {
     return Array.from(launches.values());
 }
 
+function addNewLaunch(launch) {
+    latestFlightNumber += 1;
+    //Object.assign, le pasamos un objeto de referencia y otro objeto
+    //las keys que se repitan en el segundo bjeto pisaran las del primero
+    launches.set(
+        latestFlightNumber, 
+        Object.assign(launch, {
+            flightNumber: latestFlightNumber,
+            customers: ['test'],
+            upcoming: true,
+            success: true
+        }));
+}
+
 module.exports = {
-    getAllLaunches
+    getAllLaunches,
+    addNewLaunch,
 }
