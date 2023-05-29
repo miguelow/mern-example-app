@@ -17,7 +17,7 @@ creamos una nueva promesa que se resuelve una vez tengamos la informacion cargad
 */
 function loadPLanetsData(){
     return new Promise((resolve, reject) => {
-        fs.createReadStream(path.join(__dirname, '..', 'data', 'kepler-data.csv'))
+        fs.createReadStream(path.join(__dirname, '..', '..', 'data', 'kepler-data.csv'))
             .pipe(parse({
                 comment: '#',
                 columns: true,

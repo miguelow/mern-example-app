@@ -10,7 +10,8 @@
     "server": "npm run watch --prefix server",
     "client": "npm start --prefix client",
     "watch": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm --prefix client run build"
+    "build": "npm --prefix client run build",
+    "deploy": "npm --prefix client run build && npm --prefix server start"
   },
   "keywords": [],
   "author": "",

@@ -2,7 +2,7 @@ const http = require('http');
 const express = require('express');
 
 const app = require ('./app');
-const {loadPLanetsData} = require('../models/planet.model')
+const {loadPLanetsData} = require('./models/planet.model')
 
 const server = http.createServer(app);
 
