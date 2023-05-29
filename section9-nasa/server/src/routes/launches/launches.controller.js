@@ -8,7 +8,16 @@ function httpGetAllLaunches(req, res){
 function httpAddNewLaunch(req, res){
     const launch = req.body
 
+    if(!launch.launchDate || !launch.rocket || !launch.mission || !launch.destination){
+        return res.status(400).json({error: 'All fields are required'})
+    }
+
     launch.launchDate = new Date(launch.launchDate)
+
+    if(isNaN(launch.launchDate)){
+        //isNan devuelve false si es una fecha valida
+        return res.status(400).json({error: 'Invalid launch date format'})
+    }
 
     addNewLaunch(launch)
     return res.status(201).json(launch)
