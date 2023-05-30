@@ -11,7 +11,8 @@
     "client": "npm start --prefix client",
     "watch": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm --prefix client run build",
-    "deploy": "npm --prefix client run build && npm --prefix server start"
+    "deploy-mac": "npm --prefix client run build-mac && npm --prefix server start",
+    "deploy-win": "npm --prefix client run build-win && npm --prefix server start"
   },
   "keywords": [],
   "author": "",
