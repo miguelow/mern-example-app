@@ -12,7 +12,8 @@
     "watch": "concurrently \"npm run server\" \"npm run client\"",
     "build": "npm --prefix client run build",
     "deploy-mac": "npm --prefix client run build-mac && npm --prefix server start",
-    "deploy-win": "npm --prefix client run build-win && npm --prefix server start"
+    "deploy-win": "npm --prefix client run build-win && npm --prefix server start",
+    "deploy-cluster-win": "npm --prefix client run build-win && npm --prefix server run cluster"
   },
   "keywords": [],
   "author": "",
