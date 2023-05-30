@@ -25,6 +25,11 @@ describe("Test POST /launches", () => {
         target:'madrid',
     }
 
+    const launchDataInvalidDate = {
+        ...launchData,
+        launchDate: "invalid date"
+    }
+
     test('It should respond with 201 created', async () => {
         const response = await request(app)
         .post('/launches')
@@ -39,10 +44,28 @@ describe("Test POST /launches", () => {
         //To check the body use hest assertions
         expect(response.body).toMatchObject(launchDataWithoutDate)
     })
-    test('It should catch missing requires properties', () => {
-        
+
+    test('It should catch missing required properties', async () => {
+        const response = await request(app)
+        .post('/launches')
+        .send(launchDataWithoutDate)
+        .expect('Content-Type', /json/)
+        .expect(400)
+
+        expect(response.body).toStrictEqual({
+            error: 'All fields are required'
+        })
     })
-    test('It should catch invalid dates', () => {
-        
+    
+    test('It should catch invalid dates', async () => {
+        const response = await request(app)
+        .post('/launches')
+        .send(launchDataInvalidDate)
+        .expect('Content-Type', /json/)
+        .expect(400)
+
+        expect(response.body).toStrictEqual({
+            error: 'Invalid launch date format'
+        })
     })
 })
