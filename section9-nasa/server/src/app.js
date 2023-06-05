@@ -19,7 +19,7 @@ app.use('/planets', planetsRouter );
 app.use('/launches', launchesRouter );
 app.get('/*', (req, res) => {
   //el asterisco indica que si la ruta no coincide con las anteriores
-  // dejando al frontend que lleve a cabo el enrutamiento
+  // deja al frontend el enrutamiento
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
   });
 
