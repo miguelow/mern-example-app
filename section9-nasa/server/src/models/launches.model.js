@@ -1,11 +1,12 @@
 const launchesDatabase = require('./launches.mongo');
+const planets = require('./planets.mongo');
 
 const launches = new Map();
 
 let latestFlightNumber = 100;
 
 const launch = {
-    mission: 'Kepler exploration',
+    mission: 'Test1',
     rocket: 'Rocket',
     launchDate: new Date(2001, 11, 1),
     target: 'Murcia',
@@ -23,6 +24,14 @@ async function getAllLaunches() {
 }
 
 async function saveLaunch(launch) {
+    const planet = await planets.findOne({
+        keplerName: launch.target
+    })
+
+    if(!planet) {
+        console.log(`Planet ${launch.target} does not exist`);
+    }
+
     await launchesDatabase.updateOne({
         flightNumber: launch.flightNumber,
     }, launch, {
