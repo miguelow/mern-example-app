@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path'); 
 const {parse} = require('csv-parse');
+const mongoose = require('mongoose');
 
-const habitablePlanets = [];
+const planets = require('./planets.mongo')
 
 function isHabitablePlanet(planet) {
   return planet['koi_disposition'] === 'CONFIRMED'
@@ -22,23 +23,46 @@ function loadPLanetsData(){
                 comment: '#',
                 columns: true,
             }))
-            .on('data', (data) => {
+            .on('data', async (data) => {
                 if (isHabitablePlanet(data)) {
-                    habitablePlanets.push(data);
+                    savePlanet(data)
                 }
             })
             .on('error', (err) => {
                 console.log(err);
                 reject(err)
             })
-            .on('end', () => {
+            .on('end', async () => {
+                const countPlanetsFound = (await getAllPlanets()).length;
+                console.log(`${countPlanetsFound} habitable planets found!`);
                 resolve()
             });
     })
 }
 
-function getAllPlanets() {
-    return habitablePlanets;
+async function getAllPlanets() {
+    //las funciones de mongo son async
+    return await planets.find({}, {
+        //losvalores que queremos omitir 
+        '__V': 0, '_id': 0
+    });
+    //donde importemos esta funcion tambien tenemos que hacerla async
+}
+
+async function savePlanet(planet){
+    //insert + update = upsert
+    //el planeta solo se añade si no existe, y si existe, este se actualiza
+    try{
+        await planets.updateOne({
+            keplerName: planet.kepler_name,
+        }, {
+            keplerName: planet.kepler_name,
+        }, {
+            upsert: true
+        });
+    }catch(err){
+        console.error(`Could not save planet: ${err}`)
+    }
 }
 
 module.exports = {

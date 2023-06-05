@@ -35,3 +35,5 @@ const launchesSchema = new mongoose.Schema({
         default: true,
     },
 })
+// Connects launchesSchema with the "launches" collection, un schema tiene que ser un sustantivo singular
+module.exports = mongoose.model('Launch', launchesSchema)

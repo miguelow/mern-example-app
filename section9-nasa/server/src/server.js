@@ -2,13 +2,14 @@ const http = require('http');
 const mongoose = require('mongoose');
 
 const app = require ('./app');
-const {loadPLanetsData} = require('./models/planet.model')
+const {loadPLanetsData} = require('./models/planets.model')
+require('dotenv').config();
 
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT
 
-const MONGO_URL = 'mongodb+srv://miguelowd:3l1m41@example-cluster.bzemjut.mongodb.net/'
+const  MONGO_URL = process.env.MONGO_URL
 
 mongoose.connection.once('connected', () => {
     console.log('Connected to MongoDB')
