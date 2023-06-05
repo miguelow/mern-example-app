@@ -44,7 +44,7 @@ async function getAllPlanets() {
     //las funciones de mongo son async
     return await planets.find({}, {
         //losvalores que queremos omitir 
-        '__V': 0, '_id': 0
+        '__v': 0, '_id': 0
     });
     //donde importemos esta funcion tambien tenemos que hacerla async
 }
