@@ -1,25 +1,29 @@
-const {getAllLaunches, addNewLaunch, existsLaunchWithId, abortLaunchById} = require('../../models/launches.model')
+const {
+  getAllLaunches, 
+  scheduleNewLaunch, 
+  existsLaunchWithId, 
+  abortLaunchById
+} = require('../../models/launches.model')
 
 //Al usar la nomenclatura http... sabemos que esa funcion devuelve una response
 async function httpGetAllLaunches(req, res){
         return res.status(200).json(await getAllLaunches())
 }
 
-function httpAddNewLaunch(req, res){
+async function httpAddNewLaunch(req, res){
     const launch = req.body
 
+    //validamos los campos y la fecha
     if(!launch.launchDate || !launch.rocket || !launch.mission || !launch.target){
         return res.status(400).json({error: 'All fields are required'})
     }
-
     launch.launchDate = new Date(launch.launchDate)
-
     if(isNaN(launch.launchDate)){
         //isNan devuelve false si es una fecha valida
         return res.status(400).json({error: 'Invalid launch date format'})
     }
 
-    addNewLaunch(launch)
+    await scheduleNewLaunch(launch)
     return res.status(201).json(launch)
     //return so we only set the response once per controller function
 }

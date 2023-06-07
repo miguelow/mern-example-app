@@ -3,8 +3,6 @@ const planets = require('./planets.mongo');
 
 const launches = new Map();
 
-let latestFlightNumber = 100;
-
 const launch = {
     mission: 'Test1',
     rocket: 'Rocket',
@@ -16,7 +14,21 @@ const launch = {
     success: true,
 }   
 
+const defaultFlightNumber = 100
+
 saveLaunch(launch)
+
+async function getLatestFlightNumber() {
+    const latestLaunch = await launchesDatabase
+        .findOne()
+        //el - lo ordena de mayor a menos
+        .sort('-flightNumber')
+    
+    if(!latestLaunch) {
+        return defaultFlightNumber;
+    }
+    return latestLaunch.flightNumber;
+}
 
 async function getAllLaunches() {
     return await launchesDatabase.
@@ -32,7 +44,7 @@ async function saveLaunch(launch) {
         console.log(`Planet ${launch.target} does not exist`);
     }
 
-    await launchesDatabase.updateOne({
+    await launchesDatabase.findOneAndUpdate({
         flightNumber: launch.flightNumber,
     }, launch, {
         upsert: true,
@@ -40,18 +52,17 @@ async function saveLaunch(launch) {
     )
 }
 
-function addNewLaunch(launch) {
-    latestFlightNumber += 1;
-    //Object.assign, le pasamos un objeto de referencia y otro objeto
-    //las keys que se repitan en el segundo bjeto pisaran las del primero
-    launches.set(
-        latestFlightNumber, 
-        Object.assign(launch, {
-            flightNumber: latestFlightNumber,
-            customers: ['test'],
-            upcoming: true,
-            success: true
-        }));
+async function scheduleNewLaunch(launch) {
+    const newFlightNumber = await getLatestFlightNumber() + 1;
+
+    const newLaunch = Object.assign(launch, {
+        success: true,
+        upcoming: true,
+        customers: ['paquirrin'],
+        flightNumber: newFlightNumber
+    });
+
+    await saveLaunch(newLaunch);
 }
 
 function existsLaunchWithId(launchId) {
@@ -67,7 +78,7 @@ function abortLaunchById(launchId) {
 
 module.exports = {
     getAllLaunches,
-    addNewLaunch,
+    scheduleNewLaunch,
     existsLaunchWithId,
-    abortLaunchById
+    abortLaunchById,
 }
