@@ -1,8 +1,6 @@
 const launchesDatabase = require('./launches.mongo');
 const planets = require('./planets.mongo');
 
-const launches = new Map();
-
 const launch = {
     mission: 'Test1',
     rocket: 'Rocket',
@@ -65,15 +63,20 @@ async function scheduleNewLaunch(launch) {
     await saveLaunch(newLaunch);
 }
 
-function existsLaunchWithId(launchId) {
-    return launches.has(launchId);
+async function existsLaunchWithId(launchId) {
+    return await launchesDatabase.findOne({
+        flightNumber: launchId
+    })
 }
 
-function abortLaunchById(launchId) {
-    const aborted = launches.get(launchId);
-    aborted.upcoming = false;
-    aborted.success = false;
-    return aborted;
+async function abortLaunchById(launchId) {
+    return await launchesDatabase.updateOne({
+        flightNumber: launchId
+    },{
+    upcoming: false,
+    success: false
+    }
+    )
 }
 
 module.exports = {
