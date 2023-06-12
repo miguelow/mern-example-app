@@ -7,8 +7,7 @@ const DEFAULT_FLIGHT_NUMBER = 100
 
 const SPACEX_API_URL = 'https://api.spacexdata.com/v5/launches/query'
 
-async function loadlaunchesData()  {
-
+async function loadLaunchesData()  {
     const firstlaunch =  await findLaunch({
         flightNumber: 1,
         rocket: 'Falcon 1',
@@ -47,7 +46,7 @@ async function populateLaunchData() {
         console.log('Problem downloading launch data');
         throw new Error('Launch data download failed');
       }
-    
+      console.log('Launch data fetched succesfully')
       const launchDocs = response.data.docs;
       for (const launchDoc of launchDocs) {
           const payloads = launchDoc['payloads'];
@@ -138,5 +137,5 @@ module.exports = {
     scheduleNewLaunch,
     existsLaunchWithId,
     abortLaunchById,
-    loadlaunchesData,
+    loadLaunchesData,
 }
