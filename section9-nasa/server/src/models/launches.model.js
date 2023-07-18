@@ -87,6 +87,12 @@ async function getAllLaunches(skip, limit) {
         .limit(limit)
 }
 
+async function getLaunchByFlightNumber(launchNumber) {
+    return await launchesDatabase.findOne({
+        flightNumber: launchNumber
+    })
+}
+
 async function saveLaunch(launch) {
     await launchesDatabase.findOneAndUpdate({
         flightNumber: launch.flightNumber,
@@ -134,6 +140,7 @@ async function abortLaunchById(launchId) {
 
 module.exports = {
     getAllLaunches,
+    getLaunchByFlightNumber,
     scheduleNewLaunch,
     existsLaunchWithId,
     abortLaunchById,

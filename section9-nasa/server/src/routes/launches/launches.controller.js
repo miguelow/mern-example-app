@@ -1,5 +1,6 @@
 const {
   getAllLaunches, 
+  getLaunchByFlightNumber,
   scheduleNewLaunch, 
   existsLaunchWithId, 
   abortLaunchById
@@ -16,6 +17,20 @@ async function httpGetAllLaunches(req, res){
   const launches = await getAllLaunches(skip, limit)
 
   return res.status(200).json(launches)
+}
+
+async function httpGetLaunchByFlightNumber(req, res){
+  const launchId = Number(req.params.id);
+  
+    const existsLaunch = await existsLaunchWithId(launchId);
+    if (!existsLaunch) {
+      return res.status(404).json({
+        error: 'Launch not found',
+      });
+    }
+    
+    const launch = await getLaunchByFlightNumber(launchId)
+    return res.status(200).json(launch)
 }
 
 async function httpAddNewLaunch(req, res){
@@ -60,6 +75,7 @@ async function httpAbortLaunch(req, res) {
 
 module.exports = {
     httpGetAllLaunches,
+    httpGetLaunchByFlightNumber,
     httpAddNewLaunch,
     httpAbortLaunch,
 }
